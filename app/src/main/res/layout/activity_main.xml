@@ -6,15 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/userInput"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:autofillHints=""
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="Start Typing..."
-        android:inputType="textMultiLine"
-        android:textSize="18sp"
-        tools:ignore="HardcodedText" />
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/fileName"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="246dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="File Name"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="Save" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/userInput"
+            style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autofillHints=""
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="Start Typing..."
+            android:inputType="textMultiLine"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
 </RelativeLayout>
