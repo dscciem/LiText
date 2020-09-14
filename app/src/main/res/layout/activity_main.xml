@@ -12,6 +12,31 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/andika"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:paddingStart="10sp"
+                android:paddingTop="10sp"
+                android:text="LiText Editor"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:background="@color/colorPrimary"
@@ -24,9 +49,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0"
                 android:ems="10"
+                android:hint="File Name"
                 android:inputType="textPersonName"
-                android:text="File Name"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:textColorHint="#CCFFFFFF" />
 
             <Button
                 android:id="@+id/saveButton"
