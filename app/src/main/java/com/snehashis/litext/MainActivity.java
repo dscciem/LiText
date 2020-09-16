@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int READ_REQ = 0, WRITE_REQ = 1;
     Boolean isExistingFile = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
         userInput = findViewById(R.id.userInput);
         fileName = findViewById(R.id.fileName);
-
 
         fileName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -54,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                CURRENT_FILE_NAME = s.toString().trim();
+
+                //Do something
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                CURRENT_FILE_NAME = s.toString().trim();
                 isExistingFile = false;
             }
         });
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Saving as..." + CURRENT_FILE_NAME, Toast.LENGTH_SHORT).show();
                     Intent newDocument = new Intent(Intent.ACTION_CREATE_DOCUMENT);
                     newDocument.addCategory(Intent.CATEGORY_OPENABLE);
-                    newDocument.setType("text/*");
+                    newDocument.setType("text/*|application/*log*|application/json|application/*xml*|application/*latex*|application/javascript");
                     newDocument.putExtra(Intent.EXTRA_TITLE, CURRENT_FILE_NAME);
                     startActivityForResult(newDocument, WRITE_REQ);
                     v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
@@ -99,6 +99,12 @@ public class MainActivity extends AppCompatActivity {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             }
         });
+
+        Intent handleIntent = getIntent();
+        if (handleIntent.getData() != null) {
+            readFile(handleIntent.getData());
+            isExistingFile = true;
+        }
 
         //Will Also reopen the last file from here from the cache
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
