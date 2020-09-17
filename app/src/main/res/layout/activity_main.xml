@@ -21,13 +21,13 @@
             android:orientation="horizontal">
 
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0"
-                android:clickable="true"
+                android:background="@null"
                 android:foreground="?attr/selectableItemBackground"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
@@ -41,11 +41,25 @@
                 android:fontFamily="@font/andika"
                 android:gravity="center"
                 android:includeFontPadding="false"
-                android:paddingRight="54dp"
+                android:paddingLeft="27dp"
+                android:paddingRight="27dp"
                 android:text="LiText Editor"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/settingsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0"
+                android:background="@null"
+                android:foreground="?attr/selectableItemBackground"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                app:srcCompat="@drawable/settings" />
+
         </LinearLayout>
 
         <LinearLayout

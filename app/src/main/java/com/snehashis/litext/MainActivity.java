@@ -17,12 +17,13 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 import java.io.*;
 
@@ -31,14 +32,14 @@ public class MainActivity extends AppCompatActivity {
 
     EditText userInput, fileName;
 
-    ImageButton saveButton, openButton;
-    ImageView backButton;
+    ImageButton saveButton, openButton, backButton, settingsButton;
     Uri currentFileUri;
 
     String CURRENT_FILE_NAME="";
+    int FONT_SIZE = 18;//in sp
 
     private static final int READ_REQ = 0, WRITE_REQ = 1;
-    Boolean isExistingFile = false;
+    Boolean isExistingFile = false, isNotWordWrapped =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         userInput = findViewById(R.id.userInput);
         userInput.setHorizontallyScrolling(true);//Word Wrap Off
+        isNotWordWrapped = true;
         fileName = findViewById(R.id.fileName);
 
         fileName.addTextChangedListener(new TextWatcher() {
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         openButton = findViewById(R.id.openButton);
         saveButton = findViewById(R.id.saveButton);
         backButton = findViewById(R.id.backButton);
+        settingsButton = findViewById(R.id.settingsButton);
 
         openButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +132,89 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        //Building Settings Dialog
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                AlertDialog.Builder settingsDialog =new AlertDialog.Builder(MainActivity.this);
+                settingsDialog.setTitle("Settings");
+                settingsDialog.setMessage("Change Editor Settings");
+                final View dialogView = getLayoutInflater().inflate(R.layout.edtior_settings_dialog,null);
+                settingsDialog.setView(dialogView);
+                final EditText fontSize = dialogView.findViewById(R.id.textSize);
+                final Button posi = dialogView.findViewById(R.id.posiButton), nega = dialogView.findViewById(R.id.negaButton);
+                final Switch wordWrap =dialogView.findViewById(R.id.wordWrap);
+
+                fontSize.setText(Integer.toString(FONT_SIZE));
+                wordWrap.setChecked(!isNotWordWrapped);
+
+                wordWrap.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        userInput.setHorizontallyScrolling(!wordWrap.isChecked());
+                    }
+                });
+
+                posi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(Integer.parseInt(fontSize.getText().toString()) <= 62) {
+                            int TMP_SIZE=Integer.parseInt(fontSize.getText().toString()) + 2;
+                            fontSize.setText(Integer.toString(TMP_SIZE));
+                            userInput.setTextSize(TypedValue.COMPLEX_UNIT_SP, TMP_SIZE);
+                        }
+                        else
+                            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                    }
+                });
+                nega.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(Integer.parseInt(fontSize.getText().toString()) >= 10){
+                            int TMP_SIZE=Integer.parseInt(fontSize.getText().toString()) - 2;
+                            fontSize.setText(Integer.toString(TMP_SIZE));
+                            userInput.setTextSize(TypedValue.COMPLEX_UNIT_SP, TMP_SIZE);
+                        }
+                        else
+                            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                    }
+                });
+                settingsDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this, "Settings Ok", Toast.LENGTH_SHORT).show();
+                        FONT_SIZE = Integer.parseInt(fontSize.getText().toString());
+                        isNotWordWrapped = !wordWrap.isChecked();
+                        //Do something
+                    }
+                });
+
+                settingsDialog.setNeutralButton("Default", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this, "Restored Default Values", Toast.LENGTH_SHORT).show();
+                        FONT_SIZE = 18;
+                        userInput.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+                        isNotWordWrapped = true;
+                        userInput.setHorizontallyScrolling(true);
+                        //Restore Defaults
+                    }
+                });
+                settingsDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        userInput.setTextSize(TypedValue.COMPLEX_UNIT_SP, FONT_SIZE);
+                        userInput.setHorizontallyScrolling(isNotWordWrapped);
+                        //Do Nothing
+                    }
+                });
+                settingsDialog.setIcon(R.drawable.ic_font);
+                settingsDialog.show();
+            }
+        });
+
 
 
         //Handle incoming intent for opening files from outside the app
@@ -195,7 +281,6 @@ public class MainActivity extends AppCompatActivity {
             br.close();
             inputStream.close();
             userInput.setText(buffer.toString());
-            buffer = null; // Kind of freeing the memory maybe idk actually XD
             isExistingFile = true;
         }
         catch (Exception e){
