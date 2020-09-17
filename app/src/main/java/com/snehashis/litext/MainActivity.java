@@ -21,6 +21,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import java.io.*;
@@ -29,7 +30,8 @@ import java.io.*;
 public class MainActivity extends AppCompatActivity {
 
     EditText userInput, fileName;
-    Button  openButton, saveButton;
+
+    ImageButton saveButton, openButton;
     ImageView backButton;
     Uri currentFileUri;
 
@@ -44,19 +46,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         userInput = findViewById(R.id.userInput);
-        userInput.setHorizontallyScrolling(true);
+        userInput.setHorizontallyScrolling(true);//Word Wrap Off
         fileName = findViewById(R.id.fileName);
 
         fileName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Do something if needed
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 //Do something
+                
             }
 
             @Override
@@ -81,6 +84,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        openButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(MainActivity.this, "Open an existing file", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +113,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        saveButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(MainActivity.this, "Save / Save as", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
         Intent handleIntent = getIntent();
         if (handleIntent.getData() != null) {
             readFile(handleIntent.getData());
-            isExistingFile = true;
         }
 
         //Will Also reopen the last file from here from the cache
@@ -138,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
                     currentFileUri = data.getData();
                     assert currentFileUri != null;
                     readFile(currentFileUri);
-                    isExistingFile=true;
                 }
                 break;
             }
@@ -180,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
             inputStream.close();
             userInput.setText(buffer.toString());
             buffer = null; // Kind of freeing the memory maybe idk actually XD
+            isExistingFile = true;
         }
         catch (Exception e){
             e.printStackTrace();

@@ -24,11 +24,13 @@
             <ImageView
                 android:id="@+id/backButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0"
                 android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 app:srcCompat="@drawable/arrow_back" />
 
             <TextView
@@ -39,7 +41,7 @@
                 android:fontFamily="@font/andika"
                 android:gravity="center"
                 android:includeFontPadding="false"
-                android:paddingRight="42dp"
+                android:paddingRight="54dp"
                 android:text="LiText Editor"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp"
@@ -63,37 +65,45 @@
                 android:drawableStart="@drawable/notes_vector"
                 android:drawablePadding="3dp"
                 android:ems="10"
+                android:foreground="?attr/selectableItemBackground"
                 android:hint="File Name"
                 android:inputType="text"
                 android:paddingStart="10dp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="@color/colorPrimaryLight" />
 
-            <Button
-                android:id="@+id/openButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/custom_button"
-                android:text="Open"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp" />
-
-            <Button
+            <ImageButton
                 android:id="@+id/saveButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/custom_button"
-                android:text="Save"
+                android:background="@null"
+                android:foreground="?attr/selectableItemBackground"
+                android:longClickable="true"
+                android:scaleType="fitCenter"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:srcCompat="@drawable/save_icon" />
+
+            <ImageButton
+                android:id="@+id/openButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:foreground="?attr/selectableItemBackground"
+                android:longClickable="true"
+                android:scaleType="fitCenter"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                app:srcCompat="@drawable/folder_open" />
+
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
