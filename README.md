@@ -4,9 +4,9 @@
 [![GitHub forks](https://img.shields.io/github/forks/snehashis365/LiText?style=social)](https://github.com/snehashis365/LiText/network) [![GitHub stars](https://img.shields.io/github/stars/snehashis365/LiText?style=social)](https://github.com/snehashis365/LiText/stargazers) [![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 
-### An Android based Text editor
+### An Android based Text Editor
 
-:sparkles: Simple and powerful text editor for Android, to open and save files. Developed by Students for Students.
+:sparkles: Simple and powerful Text Editor for Android, to open and save files. Developed by Students of [CIEM](https://ciem.ac.in/) for Students.
 
 
 ### :heart: Found this project useful?
