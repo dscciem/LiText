@@ -21,4 +21,4 @@ We are happy to welcome all the contributions from anyone willing to improve/add
 - Wait for the Issue to be assigned to you after which you can start working on it.
 - **Note** : Every change in this project should/must have an associated issue. 
 
-For more look into CONTRIBUTING.md and CODE_OF_CONDUCT.md
+For more look into [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
