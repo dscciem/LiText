@@ -10,6 +10,8 @@ import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class Dashboard extends AppCompatActivity {
 
 
@@ -47,6 +49,24 @@ public class Dashboard extends AppCompatActivity {
         });
     }
 
+    //Read Uris From Cache
+    private void readUriFromCache() {
+        File cacheFile = new File(this.getCacheDir(), "RECENT_FILES");
+        try {
+            if(cacheFile.exists()){
+                Toast.makeText(this, "Cache found", Toast.LENGTH_SHORT).show();
+                //To be added after finishing the recycler view layout and the adapters
+                //Have already tested the ability to read from cache not including in the commit to avoid confusion
+            }
+            else{
+                Toast.makeText(this, "No Cache", Toast.LENGTH_SHORT).show();
+                //To be added after finishing the recycler view layout and the adapters
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -63,4 +83,10 @@ public class Dashboard extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Auto update the views of recent files change after coming from the main activity
+        readUriFromCache();
+    }
 }

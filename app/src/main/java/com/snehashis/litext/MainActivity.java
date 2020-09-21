@@ -26,6 +26,9 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -286,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
         catch (Exception e){
             e.printStackTrace();
         }
+        saveUriInCache(fileUri);
     }
 
     private void editFile(@NonNull Uri fileUri) {
@@ -299,8 +303,41 @@ public class MainActivity extends AppCompatActivity {
         catch (Exception e) {
             e.printStackTrace();
         }
+        saveUriInCache(fileUri);
     }
 
+    //Save Recently opened files uri
+    private void saveUriInCache(Uri fileUri) {
+        File cacheFile = new File(this.getCacheDir(), "RECENT_FILES");
+        FileOutputStream fileOutputStream;
+        try {
+            if (cacheFile.exists()) {
+
+                Scanner scanFile = new Scanner(cacheFile);
+                List<String> recentFiles = new ArrayList<String>();
+
+                while (scanFile.hasNext()) {
+                    recentFiles.add(scanFile.nextLine());
+                }
+                scanFile.close();
+
+                if (!recentFiles.contains(fileUri.toString())) {
+                    Toast.makeText(this, "Not in cache", Toast.LENGTH_SHORT).show();
+                    fileOutputStream = new FileOutputStream(cacheFile, true);
+                    fileOutputStream.write(((fileUri.toString() + "\n").getBytes()));
+                    fileOutputStream.close();
+                }
+            } else {
+                cacheFile.createNewFile();
+                fileOutputStream = new FileOutputStream(cacheFile);
+                fileOutputStream.write(((fileUri.toString() + "\n").getBytes()));
+                fileOutputStream.close();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     //Permission Handling
     private void checkWritePermission() {
