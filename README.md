@@ -6,7 +6,9 @@
 
 ### An Android based Text Editor
 
-:sparkles: Simple and powerful Text Editor for Android, to open and save files. Developed by Students of [CIEM](https://ciem.ac.in/) for Students.
+:sparkles: Simple and powerful Text Editor for Android, to open and save files. 
+
+🎨 Developed by Students of [CIEM](https://ciem.ac.in/) for Students.
 
 
 ### :heart: Found this project useful?
