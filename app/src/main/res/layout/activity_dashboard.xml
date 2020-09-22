@@ -5,6 +5,8 @@
     android:id="@+id/dashboardLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="#F6F6F6"
     tools:context=".Dashboard">
 
 
@@ -139,14 +141,36 @@
             android:id="@+id/recentsLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-            android:background="#ECECEC"
             android:elevation="5dp"
             android:orientation="vertical">
 
 
+            <TextView
+                android:id="@+id/recentsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/history"
+                android:paddingLeft="10dp"
+                android:text="  Recent Files"
+                android:textAllCaps="false"
+                android:textColor="#CD000000"
+                android:textIsSelectable="false"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/noRecentMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_horizontal"
+                android:text="No recent files in cache" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recentsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="3dp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -3,19 +3,33 @@ package com.snehashis.litext;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Dashboard extends AppCompatActivity {
+public class Dashboard extends AppCompatActivity implements RecentFileAdapter.ItemClicked {
 
 
     CardView newFile, openFile;
+    RecyclerView recentFilesView;
+    RecyclerView.Adapter recentFilesAdapter;
+    RecyclerView.LayoutManager recentFilesLayoutManager;
+
+    TextView noRecents;
+
+    ArrayList<RecentFile> recentFiles;
 
     private static final int READ_REQ = 0;
 
@@ -47,21 +61,39 @@ public class Dashboard extends AppCompatActivity {
                 Toast.makeText(Dashboard.this, "Select a file", Toast.LENGTH_SHORT).show();
             }
         });
+
+        recentFilesView = findViewById(R.id.recentsList);
+        recentFilesView.setHasFixedSize(true);
+
+        recentFilesLayoutManager = new LinearLayoutManager(this);
+        recentFilesView.setLayoutManager(recentFilesLayoutManager);
+        recentFiles = new ArrayList<RecentFile>();
+        readUriFromCache();
+        recentFilesAdapter = new RecentFileAdapter(this, recentFiles);
+        recentFilesView.setAdapter(recentFilesAdapter);
+
+        noRecents = findViewById(R.id.noRecentMessage);
+
+    }
+
+    private void openFileFromUri(Uri fileUri) {
+        Intent openEditor = new Intent(Dashboard.this, MainActivity.class);
+        openEditor.setData(fileUri);
+        startActivity(openEditor);
     }
 
     //Read Uris From Cache
     private void readUriFromCache() {
         File cacheFile = new File(this.getCacheDir(), "RECENT_FILES");
         try {
+            recentFiles.clear();
             if(cacheFile.exists()){
-                Toast.makeText(this, "Cache found", Toast.LENGTH_SHORT).show();
-                //To be added after finishing the recycler view layout and the adapters
-                //Have already tested the ability to read from cache not including in the commit to avoid confusion
+                noRecents.setVisibility(View.GONE);
+                Scanner scanFile = new Scanner(cacheFile);
+                while (scanFile.hasNext())
+                    recentFiles.add(new RecentFile(Uri.parse(scanFile.nextLine())));
             }
-            else{
-                Toast.makeText(this, "No Cache", Toast.LENGTH_SHORT).show();
-                //To be added after finishing the recycler view layout and the adapters
-            }
+            else noRecents.setVisibility(View.VISIBLE);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -74,9 +106,7 @@ public class Dashboard extends AppCompatActivity {
         if (requestCode == READ_REQ) {
             if (resultCode == RESULT_OK) {
                 assert data != null;
-                Intent openEditor = new Intent(Dashboard.this, MainActivity.class);
-                openEditor.setData(data.getData());
-                startActivity(openEditor);
+                openFileFromUri(data.getData());
             }
         } else {
             Toast.makeText(this, "Unknown Request Code: " + requestCode, Toast.LENGTH_SHORT).show();
@@ -88,5 +118,11 @@ public class Dashboard extends AppCompatActivity {
         super.onResume();
         //Auto update the views of recent files change after coming from the main activity
         readUriFromCache();
+        recentFilesAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemCLicked(int index) {
+        openFileFromUri(recentFiles.get(index).getFileUri());
     }
 }
