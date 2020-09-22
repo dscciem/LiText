@@ -5,13 +5,17 @@
     android:id="@+id/dashboardLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="#F6F6F6"
     tools:context=".Dashboard">
 
 
     <LinearLayout
+        android:id="@+id/parentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
@@ -35,12 +39,13 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/quickStartLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -49,7 +54,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="18sp"
+                android:layout_marginLeft="15sp"
+                android:layout_marginRight="15sp"
+                android:layout_marginBottom="5dp"
                 android:animateLayoutChanges="true"
                 android:clickable="true"
                 android:elevation="2dp"
@@ -59,6 +66,7 @@
                 app:cardMaxElevation="8dp">
 
                 <LinearLayout
+                    android:id="@+id/cardLayout1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
@@ -89,7 +97,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="18sp"
+                android:layout_marginLeft="15sp"
+                android:layout_marginRight="15sp"
+                android:layout_marginBottom="5dp"
                 android:animateLayoutChanges="true"
                 android:clickable="true"
                 android:elevation="2dp"
@@ -99,6 +109,7 @@
                 app:cardMaxElevation="8dp">
 
                 <LinearLayout
+                    android:id="@+id/cardLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
@@ -124,6 +135,42 @@
 
             </androidx.cardview.widget.CardView>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/recentsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:elevation="5dp"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/recentsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/history"
+                android:paddingLeft="10dp"
+                android:text="  Recent Files"
+                android:textAllCaps="false"
+                android:textColor="#CD000000"
+                android:textIsSelectable="false"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/noRecentMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_horizontal"
+                android:text="No recent files in cache" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recentsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="3dp" />
         </LinearLayout>
 
     </LinearLayout>
