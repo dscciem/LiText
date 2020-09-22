@@ -1,9 +1,9 @@
 # LiText
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/dsc-ciem/LiText/graphs/commit-activity)
-[![GitHub issues](https://img.shields.io/github/issues/dsc-ciem/LiText)](https://github.com/dsc-ciem/LiText/issues)
-[![GitHub forks](https://img.shields.io/github/forks/dsc-ciem/LiText?style=social)](https://github.com/dsc-ciem/LiText/network)
-[![GitHub stars](https://img.shields.io/github/stars/dsc-ciem/LiText?style=social)](https://github.com/dsc-ciem/LiText/stargazers)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/snehashis365/LiText/graphs/commit-activity)
+[![GitHub issues](https://img.shields.io/github/issues/snehashis365/LiText)](https://github.com/snehashis365/LiText/issues)
+[![GitHub forks](https://img.shields.io/github/forks/snehashis365/LiText?style=social)](https://github.com/snehashis365/LiText/network)
+[![GitHub stars](https://img.shields.io/github/stars/snehashis365/LiText?style=social)](https://github.com/snehashis365/LiText/stargazers)
 [![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 ### An Android based Text Editor
