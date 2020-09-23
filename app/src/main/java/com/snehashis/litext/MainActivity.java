@@ -1,11 +1,5 @@
 package com.snehashis.litext;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,7 +11,6 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
@@ -26,7 +19,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
-import java.io.*;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     String CURRENT_FILE_NAME="";
     int FONT_SIZE = 18;//in sp
+
+    Stack undoStack, redoStack;
 
     private static final int READ_REQ = 0, WRITE_REQ = 1;
     Boolean isExistingFile = false, isNotWordWrapped =false;
@@ -59,22 +65,44 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Do something if needed
-                Log.d("Beofore: ", "s = " + s + "count = " + count);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Do something
-                Log.d("OnChange: ","s = " + s + "count = " + count);
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 CURRENT_FILE_NAME = s.toString().trim();
                 isExistingFile = false;
-                Log.d("After: ","s = " + s);
             }
         });
+
+        undoStack = new Stack();
+        redoStack = new Stack();
+
+        final TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Do Something
+                undoStack.push(s.toString().trim());
+                updateUndoRedo();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Do Something
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+
+        userInput.addTextChangedListener(textWatcher);
 
         openButton = findViewById(R.id.openButton);
         saveButton = findViewById(R.id.saveButton);
@@ -82,6 +110,12 @@ public class MainActivity extends AppCompatActivity {
         undoButton = findViewById(R.id.undoButton);
         redoButton = findViewById(R.id.redoButton);
         settingsButton = findViewById(R.id.settingsButton);
+
+        //Initially Disabling the buttons
+        undoButton.setEnabled(false);
+        undoButton.setAlpha((float) 0.5);
+        redoButton.setEnabled(false);
+        redoButton.setAlpha((float) 0.5);
 
         openButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,11 +178,12 @@ public class MainActivity extends AppCompatActivity {
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
-                //Do something
-                undoButton.setEnabled(false);
-                undoButton.setAlpha((float) 0.5);
-
+                redoStack.push(userInput.getText().toString().trim());
+                String tmp = undoStack.pop();
+                userInput.removeTextChangedListener(textWatcher);
+                userInput.setText(tmp);
+                userInput.addTextChangedListener(textWatcher);
+                updateUndoRedo();
             }
         });
         undoButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -163,11 +198,13 @@ public class MainActivity extends AppCompatActivity {
         redoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
-                //Do something
-                redoButton.setEnabled(false);
-                redoButton.setAlpha((float) 0.5);
 
+                undoStack.push(userInput.getText().toString().trim());
+                String tmp = redoStack.pop();
+                userInput.removeTextChangedListener(textWatcher);
+                userInput.setText(tmp);
+                userInput.addTextChangedListener(textWatcher);
+                updateUndoRedo();
             }
         });
         redoButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -348,6 +385,25 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         saveUriInCache(fileUri);
+    }
+
+    private void updateUndoRedo(){
+        if(undoStack.isEmpty){
+            undoButton.setEnabled(false);
+            undoButton.setAlpha((float) 0.5);
+        }
+        else {
+            undoButton.setEnabled(true);
+            undoButton.setAlpha((float)1);
+        }
+        if(redoStack.isEmpty){
+            redoButton.setEnabled(false);
+            redoButton.setAlpha((float) 0.5);
+        }
+        else {
+            redoButton.setEnabled(true);
+            redoButton.setAlpha((float)1);
+        }
     }
 
     //Save Recently opened files uri
