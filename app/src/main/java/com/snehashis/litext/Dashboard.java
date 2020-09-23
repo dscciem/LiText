@@ -1,19 +1,18 @@
 package com.snehashis.litext;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public class Dashboard extends AppCompatActivity implements RecentFileAdapter.It
 
         recentFilesLayoutManager = new LinearLayoutManager(this);
         recentFilesView.setLayoutManager(recentFilesLayoutManager);
-        recentFiles = new ArrayList<RecentFile>();
+        recentFiles = new ArrayList<>();
         readUriFromCache();
         recentFilesAdapter = new RecentFileAdapter(this, recentFiles);
         recentFilesView.setAdapter(recentFilesAdapter);

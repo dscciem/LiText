@@ -65,7 +65,7 @@ public class RecentFileAdapter extends RecyclerView.Adapter<RecentFileAdapter.Vi
 
         holder.fileName.setText(recentFiles.get(position).getFileName());
         holder.filePath.setText(recentFiles.get(position).getFilePath());
-        ArrayList<String> codingExtensions = new ArrayList<String>();
+        ArrayList<String> codingExtensions = new ArrayList<>();
 
         //Adding some file extensions that will show a different image view
         codingExtensions.add("java");
