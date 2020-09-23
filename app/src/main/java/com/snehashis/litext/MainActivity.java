@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText userInput, fileName;
 
-    ImageButton saveButton, openButton, backButton, settingsButton;
+    ImageButton saveButton, openButton, backButton, settingsButton, undoButton, redoButton;
     Uri currentFileUri;
 
     String CURRENT_FILE_NAME="";
@@ -58,25 +59,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Do something if needed
-
+                Log.d("Beofore: ", "s = " + s + "count = " + count);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //Do something
-                
+                Log.d("OnChange: ","s = " + s + "count = " + count);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 CURRENT_FILE_NAME = s.toString().trim();
                 isExistingFile = false;
+                Log.d("After: ","s = " + s);
             }
         });
 
         openButton = findViewById(R.id.openButton);
         saveButton = findViewById(R.id.saveButton);
         backButton = findViewById(R.id.backButton);
+        undoButton = findViewById(R.id.undoButton);
+        redoButton = findViewById(R.id.redoButton);
         settingsButton = findViewById(R.id.settingsButton);
 
         openButton.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +140,46 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+                //Do something
+                undoButton.setEnabled(false);
+                undoButton.setAlpha((float) 0.5);
+
+            }
+        });
+        undoButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(MainActivity.this, "Undo", Toast.LENGTH_LONG).show();
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                return false;
+            }
+        });
+
+        redoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+                //Do something
+                redoButton.setEnabled(false);
+                redoButton.setAlpha((float) 0.5);
+
+            }
+        });
+        redoButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(MainActivity.this, "Redo", Toast.LENGTH_LONG).show();
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                return false;
+            }
+        });
+
+
         //Building Settings Dialog
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 settingsDialog.setView(dialogView);
                 final EditText fontSize = dialogView.findViewById(R.id.textSize);
                 final Button posi = dialogView.findViewById(R.id.posiButton), nega = dialogView.findViewById(R.id.negaButton);
-                final Switch wordWrap =dialogView.findViewById(R.id.wordWrap);
+                final Switch wordWrap = dialogView.findViewById(R.id.wordWrap);
 
                 fontSize.setText(Integer.toString(FONT_SIZE));
                 wordWrap.setChecked(!isNotWordWrapped);
@@ -322,7 +366,6 @@ public class MainActivity extends AppCompatActivity {
                 scanFile.close();
 
                 if (!recentFiles.contains(fileUri.toString())) {
-                    Toast.makeText(this, "Not in cache", Toast.LENGTH_SHORT).show();
                     fileOutputStream = new FileOutputStream(cacheFile, true);
                     fileOutputStream.write(((fileUri.toString() + "\n").getBytes()));
                     fileOutputStream.close();
