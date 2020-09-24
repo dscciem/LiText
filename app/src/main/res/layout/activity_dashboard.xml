@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="#F6F6F6"
     tools:context=".Dashboard">
 
 
@@ -170,7 +169,6 @@
                 android:paddingBottom="2sp"
                 android:text="  Recent Files"
                 android:textAllCaps="false"
-                android:textColor="#CD000000"
                 android:textIsSelectable="false"
                 android:textSize="20sp" />
 
