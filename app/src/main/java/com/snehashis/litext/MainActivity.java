@@ -47,9 +47,31 @@ public class MainActivity extends AppCompatActivity {
     int FONT_SIZE = 18;//in sp
 
     Stack undoStack, redoStack;
+    final TextWatcher textWatcher;
 
     private static final int READ_REQ = 0, WRITE_REQ = 1;
     Boolean isExistingFile = false, isNotWordWrapped =false;
+
+    public MainActivity() {
+        this.textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Do Something
+                undoStack.push(s.toString());
+                updateUndoRedo();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //Do Something
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //Do something
+            }
+        };
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,24 +105,7 @@ public class MainActivity extends AppCompatActivity {
         undoStack = new Stack();
         redoStack = new Stack();
 
-        final TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //Do Something
-                undoStack.push(s.toString().trim());
-                updateUndoRedo();
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //Do Something
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        };
 
         userInput.addTextChangedListener(textWatcher);
 
@@ -178,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                redoStack.push(userInput.getText().toString().trim());
+                redoStack.push(userInput.getText().toString());
                 String tmp = undoStack.pop();
                 userInput.removeTextChangedListener(textWatcher);
                 userInput.setText(tmp);
@@ -199,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                undoStack.push(userInput.getText().toString().trim());
+                undoStack.push(userInput.getText().toString());
                 String tmp = redoStack.pop();
                 userInput.removeTextChangedListener(textWatcher);
                 userInput.setText(tmp);
@@ -364,7 +369,9 @@ public class MainActivity extends AppCompatActivity {
             }
             br.close();
             inputStream.close();
+            userInput.removeTextChangedListener(textWatcher);
             userInput.setText(buffer.toString());
+            userInput.addTextChangedListener(textWatcher);
             isExistingFile = true;
         }
         catch (Exception e){
