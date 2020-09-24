@@ -30,8 +30,8 @@
                 android:layout_weight="0"
                 android:background="@null"
                 android:foreground="?attr/selectableItemBackground"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
+                android:paddingLeft="12sp"
+                android:paddingRight="12sp"
                 app:srcCompat="@drawable/arrow_back" />
 
             <TextView
@@ -42,7 +42,7 @@
                 android:fontFamily="@font/andika"
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
-                android:paddingLeft="7dp"
+                android:paddingLeft="7sp"
                 android:text="LiText Editor"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp"
@@ -55,8 +55,8 @@
                 android:layout_weight="0"
                 android:background="@null"
                 android:foreground="?attr/selectableItemBackground"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
                 app:srcCompat="@drawable/undo" />
 
             <ImageButton
@@ -66,8 +66,8 @@
                 android:layout_weight="0"
                 android:background="@null"
                 android:foreground="?attr/selectableItemBackground"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="10sp"
+                android:paddingRight="10sp"
                 app:srcCompat="@drawable/redo" />
 
             <ImageButton
@@ -78,8 +78,8 @@
                 android:layout_weight="0"
                 android:background="@null"
                 android:foreground="?attr/selectableItemBackground"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
+                android:paddingLeft="12sp"
+                android:paddingRight="12sp"
                 app:srcCompat="@drawable/settings" />
 
         </LinearLayout>
@@ -94,17 +94,17 @@
             <EditText
                 android:id="@+id/fileName"
                 style="@style/Widget.AppCompat.EditText"
-                android:layout_width="246dp"
+                android:layout_width="246sp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"
                 android:drawableStart="@drawable/notes_vector"
-                android:drawablePadding="3dp"
+                android:drawablePadding="3sp"
                 android:ems="10"
                 android:foreground="?attr/selectableItemBackground"
                 android:hint="File Name"
                 android:inputType="text"
-                android:paddingStart="10dp"
+                android:paddingStart="10sp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="@color/colorPrimaryLight" />
 
@@ -113,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_margin="5dp"
+                android:layout_margin="5sp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:foreground="?attr/selectableItemBackground"
@@ -129,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_margin="5dp"
+                android:layout_margin="5sp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:foreground="?attr/selectableItemBackground"
@@ -146,11 +146,11 @@
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="15dp"
-            android:padding="3dp"
-            app:cardCornerRadius="3dp"
-            app:cardElevation="3dp"
-            app:cardMaxElevation="4dp">
+            android:layout_margin="15sp"
+            android:padding="3sp"
+            app:cardCornerRadius="3sp"
+            app:cardElevation="3sp"
+            app:cardMaxElevation="4sp">
 
             <EditText
                 android:id="@+id/userInput"

@@ -1,10 +1,12 @@
 package com.snehashis.litext;
 
+import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,12 +23,13 @@ import java.util.Scanner;
 public class Dashboard extends AppCompatActivity implements RecentFileAdapter.ItemClicked {
 
 
-    CardView newFile, openFile;
+    CardView newFile, openFile, recentCard;
     RecyclerView recentFilesView;
     RecyclerView.Adapter recentFilesAdapter;
     RecyclerView.LayoutManager recentFilesLayoutManager;
+    LinearLayout qsLayout, recentsLayout;
 
-    TextView noRecents;
+    TextView recentTitle , noRecents;
 
     ArrayList<RecentFile> recentFiles;
 
@@ -39,6 +42,7 @@ public class Dashboard extends AppCompatActivity implements RecentFileAdapter.It
 
         newFile = findViewById(R.id.createFileCard);
         openFile = findViewById(R.id.openFileCard);
+        recentCard = findViewById(R.id.recentFilesCard);
 
         newFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +76,29 @@ public class Dashboard extends AppCompatActivity implements RecentFileAdapter.It
         recentFilesView.setAdapter(recentFilesAdapter);
 
         noRecents = findViewById(R.id.noRecentMessage);
+
+        qsLayout = findViewById(R.id.quickStartLayout);
+        qsLayout.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        recentsLayout = findViewById(R.id.recentsLayout);
+        recentTitle = findViewById(R.id.recentsTitle);
+
+        recentCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recentsLayout.setVisibility(View.VISIBLE);
+                qsLayout.setOrientation(LinearLayout.HORIZONTAL);
+                recentCard.setVisibility(View.GONE);
+            }
+        });
+
+        recentTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recentCard.setVisibility(View.VISIBLE);
+                qsLayout.setOrientation(LinearLayout.VERTICAL);
+                recentsLayout.setVisibility(View.GONE);
+            }
+        });
 
     }
 
