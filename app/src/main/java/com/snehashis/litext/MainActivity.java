@@ -185,12 +185,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 redoStack.push(userInput.getText().toString());
+                int pos = userInput.getSelectionStart();
                 String tmp = undoStack.pop();
                 userInput.removeTextChangedListener(textWatcher);
                 userInput.setText(tmp);
+                pos = Math.min(pos, tmp.length() - 1);
                 userInput.addTextChangedListener(textWatcher);
                 updateUndoRedo();
-                userInput.clearFocus();
+                userInput.setSelection(pos);
             }
         });
         undoButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -207,11 +209,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 undoStack.push(userInput.getText().toString());
+                int pos = userInput.getSelectionStart();
                 String tmp = redoStack.pop();
                 userInput.removeTextChangedListener(textWatcher);
                 userInput.setText(tmp);
+                pos = Math.min(pos, tmp.length() - 1);
                 userInput.addTextChangedListener(textWatcher);
                 updateUndoRedo();
+                userInput.setSelection(pos);
             }
         });
         redoButton.setOnLongClickListener(new View.OnLongClickListener() {
