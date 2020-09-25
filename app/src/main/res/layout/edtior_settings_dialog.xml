@@ -29,10 +29,11 @@
             android:layout_weight="1"
             android:background="@drawable/custom_button"
             android:fontFamily="@font/anonymous_pro"
+            android:foreground="?attr/selectableItemBackground"
             android:foregroundGravity="center"
             android:text="-"
             android:textColor="@color/colorPrimaryLight"
-            android:textSize="30sp"
+            android:textSize="21sp"
             android:textStyle="bold" />
 
         <EditText
@@ -57,19 +58,21 @@
             android:layout_weight="1"
             android:background="@drawable/custom_button"
             android:fontFamily="@font/anonymous_pro"
+            android:foreground="?attr/selectableItemBackground"
             android:foregroundGravity="center"
             android:text="+"
             android:textColor="@color/colorPrimaryLight"
-            android:textSize="30sp"
+            android:textSize="21sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/wordWrap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:text="Word Wrap    " />
+        android:text="Word Wrap    "
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>

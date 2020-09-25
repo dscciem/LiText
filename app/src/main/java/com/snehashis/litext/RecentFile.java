@@ -15,6 +15,7 @@ public class RecentFile {
     public RecentFile(Uri fileUri) {
         this.fileUri = fileUri;
         this.filePath = fileUri.getLastPathSegment();
+        assert this.filePath != null;
         this.filePath = "/" + this.filePath.substring(this.filePath.lastIndexOf(':') + 1);
         this.fileName = this.filePath.substring(this.filePath.lastIndexOf('/') + 1);
         this.fileType = this.fileName.substring(this.fileName.lastIndexOf('.') + 1);

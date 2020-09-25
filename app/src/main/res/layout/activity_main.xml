@@ -106,7 +106,9 @@
                 android:inputType="text"
                 android:paddingStart="10sp"
                 android:textColor="#FFFFFF"
-                android:textColorHint="@color/colorPrimaryLight" />
+                android:textColorHighlight="#3F51B5"
+                android:textColorHint="@color/colorPrimaryLight"
+                android:textCursorDrawable="@null" />
 
             <ImageButton
                 android:id="@+id/saveButton"

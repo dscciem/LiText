@@ -1,6 +1,7 @@
 package com.snehashis.litext;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,12 +18,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -184,11 +185,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 redoStack.push(userInput.getText().toString());
+                int pos = userInput.getSelectionStart();
                 String tmp = undoStack.pop();
                 userInput.removeTextChangedListener(textWatcher);
                 userInput.setText(tmp);
+                pos = Math.min(pos, tmp.length() - 1);
                 userInput.addTextChangedListener(textWatcher);
                 updateUndoRedo();
+                userInput.setSelection(pos);
             }
         });
         undoButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -205,11 +209,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 undoStack.push(userInput.getText().toString());
+                int pos = userInput.getSelectionStart();
                 String tmp = redoStack.pop();
                 userInput.removeTextChangedListener(textWatcher);
                 userInput.setText(tmp);
+                pos = Math.min(pos, tmp.length() - 1);
                 userInput.addTextChangedListener(textWatcher);
                 updateUndoRedo();
+                userInput.setSelection(pos);
             }
         });
         redoButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -224,6 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Building Settings Dialog
         settingsButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
@@ -234,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 settingsDialog.setView(dialogView);
                 final EditText fontSize = dialogView.findViewById(R.id.textSize);
                 final Button posi = dialogView.findViewById(R.id.posiButton), nega = dialogView.findViewById(R.id.negaButton);
-                final Switch wordWrap = dialogView.findViewById(R.id.wordWrap);
+                final SwitchCompat wordWrap = dialogView.findViewById(R.id.wordWrap);
 
                 fontSize.setText(Integer.toString(FONT_SIZE));
                 wordWrap.setChecked(!isNotWordWrapped);
@@ -243,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         userInput.setHorizontallyScrolling(!wordWrap.isChecked());
+                        Toast.makeText(MainActivity.this, "Horizontal Scrolling : " + (!wordWrap.isChecked()?"On":"Off"), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -273,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
                 settingsDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainActivity.this, "Settings Ok", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Settings Saved", Toast.LENGTH_SHORT).show();
                         FONT_SIZE = Integer.parseInt(fontSize.getText().toString());
                         isNotWordWrapped = !wordWrap.isChecked();
                         //Do something
@@ -294,12 +303,14 @@ public class MainActivity extends AppCompatActivity {
                 settingsDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this, "Discarded Settings", Toast.LENGTH_SHORT).show();
                         userInput.setTextSize(TypedValue.COMPLEX_UNIT_SP, FONT_SIZE);
                         userInput.setHorizontallyScrolling(isNotWordWrapped);
                         //Do Nothing
                     }
                 });
                 settingsDialog.setIcon(R.drawable.ic_font);
+                settingsDialog.setCancelable(false);
                 settingsDialog.show();
             }
         });
@@ -421,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
             if (cacheFile.exists()) {
 
                 Scanner scanFile = new Scanner(cacheFile);
-                List<String> recentFiles = new ArrayList<String>();
+                List<String> recentFiles = new ArrayList<>();
 
                 while (scanFile.hasNext()) {
                     recentFiles.add(scanFile.nextLine());
@@ -434,6 +445,7 @@ public class MainActivity extends AppCompatActivity {
                     fileOutputStream.close();
                 }
             } else {
+                //noinspection ResultOfMethodCallIgnored
                 cacheFile.createNewFile();
                 fileOutputStream = new FileOutputStream(cacheFile);
                 fileOutputStream.write(((fileUri.toString() + "\n").getBytes()));
@@ -468,16 +480,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case 7:{
-                //Do something
-
-                break;
-            }
-            default:
-                //Do something
-                break;
-        }
+        //Do something
+        //if (requestCode == 7) {
+            //Do something
+        //}
     }
 }
 
