@@ -16,7 +16,7 @@ Just install and run the app, click on open -> select your desired txt file and 
 
 Home             |                          Edit 
 :-------------------------:|:-------------------------:|
-<img src="https://raw.githubusercontent.com/ugwulo/LiText/1.1.0_documentation/assets/home.png" width="300" height="500"/> | <img src="https://raw.githubusercontent.com/ugwulo/LiText/1.1.0_documentation/assets/edit.png" width="300" height="500"/>
+<img src="https://raw.githubusercontent.com/ugwulo/LiText/1.1.0_documentation/assets/home.png" /> | <img src="https://raw.githubusercontent.com/ugwulo/LiText/1.1.0_documentation/assets/edit.png"/>
  
 - Supports source code files like java/js/c/cpp/py/html/css and many more
 
@@ -28,12 +28,12 @@ Recent files can be easily accesed by clicking the `Recents` button.
 You don't need stress on navigating through your device folders for your files.
 
 
-<img src="https://raw.githubusercontent.com/ugwulo/LiText/1.1.0_documentation/assets/history.png" width="300" height="500"/>
+<img src="https://raw.githubusercontent.com/ugwulo/LiText/1.1.0_documentation/assets/history.png"/>
  
 - Customize the editor options like font size, word wrap and other settings.
 To add custom settings to your text, just click the `Settings` button and make your preferred customizations
 
-<img src="https://raw.githubusercontent.com/ugwulo/LiText/1.1.0_documentation/assets/format.png" width="300" height="500"/>
+<img src="https://raw.githubusercontent.com/ugwulo/LiText/1.1.0_documentation/assets/format.png"/>
  
 
 - Support for older devices running Android version as old as 5.0 Lolipop
