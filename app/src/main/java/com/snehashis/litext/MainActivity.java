@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     final TextWatcher textWatcher;
 
     private static final int READ_REQ = 0, WRITE_REQ = 1;
-    Boolean isExistingFile = false, isNotWordWrapped =false;
+    Boolean isExistingFile = false, isSaved = false, isNotWordWrapped =false;
 
     public MainActivity() {
         this.textWatcher = new TextWatcher() {
@@ -150,15 +150,9 @@ public class MainActivity extends AppCompatActivity {
                     editFile(currentFileUri);
                 }
                 else {
-                    Toast.makeText(MainActivity.this, "Saving as..." + CURRENT_FILE_NAME, Toast.LENGTH_SHORT).show();
-                    Intent newDocument = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-                    newDocument.addCategory(Intent.CATEGORY_OPENABLE);
-                    newDocument.setType("text/*|application/*log*|application/json|application/*xml*|application/*latex*|application/javascript");
-                    newDocument.putExtra(Intent.EXTRA_TITLE, CURRENT_FILE_NAME);
-                    startActivityForResult(newDocument, WRITE_REQ);
+                    saveFile();
                     v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
                 }
-                Toast.makeText(MainActivity.this, "File Saved", Toast.LENGTH_SHORT).show();
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
             }
         });
@@ -176,7 +170,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                finish();
+                if( (isExistingFile && !isSaved) || (!isExistingFile && !userInput.getText().toString().isEmpty())){
+                    AlertDialog.Builder savePrompt = new AlertDialog.Builder(MainActivity.this);
+                    savePrompt.setTitle("File Not Saved!");
+                    savePrompt.setMessage("This file is not saved if you exit without saving all your changes will be discarded.\nDo you want to save the changes?");
+                    savePrompt.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if(isExistingFile)
+                                editFile(currentFileUri);
+                            else
+                                saveFile();
+                            finish();
+                        }
+                    });
+                    savePrompt.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                            Toast.makeText(MainActivity.this, "Discarded Changes", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    savePrompt.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(MainActivity.this, "Let's keep working", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    savePrompt.setCancelable(false);
+                    savePrompt.show();
+                }
+                else {
+                    finish();
+                }
             }
         });
 
@@ -384,11 +410,21 @@ public class MainActivity extends AppCompatActivity {
             userInput.setText(buffer.toString());
             userInput.addTextChangedListener(textWatcher);
             isExistingFile = true;
+            isSaved = true;
+            currentFileUri = fileUri;
         }
         catch (Exception e){
             e.printStackTrace();
         }
         saveUriInCache(fileUri);
+    }
+
+    private void saveFile() {
+        Intent newDocument = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        newDocument.addCategory(Intent.CATEGORY_OPENABLE);
+        newDocument.setType("text/*|application/*log*|application/json|application/*xml*|application/*latex*|application/javascript");
+        newDocument.putExtra(Intent.EXTRA_TITLE, CURRENT_FILE_NAME.equals("")?"New file.txt":CURRENT_FILE_NAME);
+        startActivityForResult(newDocument, WRITE_REQ);
     }
 
     private void editFile(@NonNull Uri fileUri) {
@@ -398,8 +434,10 @@ public class MainActivity extends AppCompatActivity {
             FileOutputStream fileOutputStream = new FileOutputStream(fileDescriptor.getFileDescriptor());
             fileOutputStream.write(userInput.getText().toString().trim().getBytes());
             fileOutputStream.close();
+            Toast.makeText(this, "File Saved", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e) {
+            Toast.makeText(this, "Error check logcat", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         saveUriInCache(fileUri);
@@ -409,10 +447,12 @@ public class MainActivity extends AppCompatActivity {
         if(undoStack.isEmpty){
             undoButton.setEnabled(false);
             undoButton.setAlpha((float) 0.5);
+            isSaved = true;
         }
         else {
             undoButton.setEnabled(true);
             undoButton.setAlpha((float)1);
+            isSaved = false;
         }
         if(redoStack.isEmpty){
             redoButton.setEnabled(false);
@@ -484,6 +524,11 @@ public class MainActivity extends AppCompatActivity {
         //if (requestCode == 7) {
             //Do something
         //}
+    }
+
+    @Override
+    public void onBackPressed() {
+        backButton.callOnClick();
     }
 }
 
